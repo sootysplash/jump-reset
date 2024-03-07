@@ -3,7 +3,7 @@
 	"id": "jump-reset-indicator",
 	"version": "${version}",
 	"name": "Jump Reset Indicator",
-	"description": "Informs the player on how close they were to performing a successful jump reset.\nOr by how much you missed the window...",
+	"description": "Informs the player on how close they were to performing a successful jump reset.",
 	"authors": [
 		"Sootysplash"
 	],
