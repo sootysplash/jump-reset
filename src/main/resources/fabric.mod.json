@@ -1,0 +1,34 @@
+{
+	"schemaVersion": 1,
+	"id": "jump-reset-indicator",
+	"version": "${version}",
+	"name": "Jump Reset Indicator",
+	"description": "Informs the player on how close they were to performing a successful jump reset.\nOr by how much you missed the window...",
+	"authors": [
+		"Sootysplash"
+	],
+	"contact": {
+		"homepage": "https://github.com/sootysplash",
+		"sources": "https://github.com/sootysplash/jump-reset"
+	},
+	"license": "Apache-2.0",
+	"icon": "assets/jump-reset-indicator/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+			"me.sootysplash.JumpResetIndicator"
+		],
+		"modmenu": [
+			"me.sootysplash.ModMenu"
+		]
+	},
+	"mixins": [
+		"jump-reset-indicator.mixins.json"
+	],
+	"depends": {
+		"fabricloader": ">=0.14.7",
+		"minecraft": ">=1.20",
+		"java": ">=17",
+		"fabric-api": "*"
+	}
+}
