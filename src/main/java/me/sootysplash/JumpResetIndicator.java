@@ -24,27 +24,27 @@ public class JumpResetIndicator implements ModInitializer {
 	public void onInitialize() {
 		HudRenderCallback.EVENT.register(this::renderWidget);
 		LOGGER.info("JumpResetIndicator | Sootysplash was here");
-		AutoConfig.register(Config.class, GsonConfigSerializer::new);
+		AutoConfig.register(ConfigJR.class, GsonConfigSerializer::new);
 	}
 	private void renderWidget(DrawContext context, float delta){
-		Config config = Config.getInstance();
+		ConfigJR configJR = ConfigJR.getInstance();
 
-		if(!config.enabled)
+		if(!configJR.enabled)
 			return;
 
 		String diff = "No Jump";
-		if(lastModTime + 2500 <= System.currentTimeMillis() || Math.abs(jumpAge - hurtAge) >= config.ticks) diff = "No Jump";
+		if(lastModTime + 2500 <= System.currentTimeMillis() || Math.abs(jumpAge - hurtAge) >= configJR.ticks) diff = "No Jump";
 		else if (jumpAge == hurtAge + 1) diff = "Perfect!";
 		else if(hurtAge + 1 < jumpAge) diff = "Late: ".concat(String.valueOf(jumpAge - hurtAge + 1)).concat(" Tick");
 		else if(hurtAge + 1 > jumpAge) diff = "Early: ".concat(String.valueOf(hurtAge + 1 - jumpAge)).concat(" Tick");
 
 		int alpha = 50;
-		int x = config.x;
-		int y = config.y;
+		int x = configJR.x;
+		int y = configJR.y;
 		int xOffset = 80;
 		int yOffset = 20;
 
-		if(config.background) {
+		if(configJR.background) {
 
 			Tessellator tess = Tessellator.getInstance();
 			BufferBuilder bf = tess.getBuffer();

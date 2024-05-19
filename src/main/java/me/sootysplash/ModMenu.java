@@ -14,46 +14,46 @@ public class ModMenu implements ModMenuApi {
     @Override
     public ConfigScreenFactory<?> getModConfigScreenFactory() {
         return parent -> {
-            Config config = Config.getInstance();
+            ConfigJR configJR = ConfigJR.getInstance();
 
             ConfigBuilder builder = ConfigBuilder.create()
                     .setParentScreen(parent)
                     .setTitle(Text.of("Config"))
-                    .setSavingRunnable(config::save);
+                    .setSavingRunnable(configJR::save);
 
             ConfigCategory general = builder.getOrCreateCategory(Text.of("General"));
             ConfigEntryBuilder cfgent =  builder.entryBuilder();
 
 
 
-            general.addEntry(cfgent.startBooleanToggle(Text.of("Enabled"), config.enabled)
+            general.addEntry(cfgent.startBooleanToggle(Text.of("Enabled"), configJR.enabled)
                     .setDefaultValue(true)
                     .setTooltip(Text.of("Render the Indicator?"))
-                    .setSaveConsumer(newValue -> config.enabled = newValue)
+                    .setSaveConsumer(newValue -> configJR.enabled = newValue)
                     .build());
 
-            general.addEntry(cfgent.startBooleanToggle(Text.of("BackGround"), config.background)
+            general.addEntry(cfgent.startBooleanToggle(Text.of("BackGround"), configJR.background)
                     .setDefaultValue(false)
                     .setTooltip(Text.of("Render the Background?"))
-                    .setSaveConsumer(newValue -> config.background = newValue)
+                    .setSaveConsumer(newValue -> configJR.background = newValue)
                     .build());
 
-            general.addEntry(cfgent.startIntSlider(Text.of("X Position"), config.x, 0, mc.getWindow().getScaledWidth())
+            general.addEntry(cfgent.startIntSlider(Text.of("X Position"), configJR.x, 0, mc.getWindow().getScaledWidth())
                     .setDefaultValue(300)
                     .setTooltip(Text.of("The X Position of the HUD element"))
-                    .setSaveConsumer(newValue -> config.x = newValue)
+                    .setSaveConsumer(newValue -> configJR.x = newValue)
                     .build());
 
-            general.addEntry(cfgent.startIntSlider(Text.of("Y Position"), config.y, 0, mc.getWindow().getScaledHeight())
+            general.addEntry(cfgent.startIntSlider(Text.of("Y Position"), configJR.y, 0, mc.getWindow().getScaledHeight())
                     .setDefaultValue(200)
                     .setTooltip(Text.of("The Y Position of the HUD element"))
-                    .setSaveConsumer(newValue -> config.y = newValue)
+                    .setSaveConsumer(newValue -> configJR.y = newValue)
                     .build());
 
-            general.addEntry(cfgent.startIntSlider(Text.of("Maximum Early/Late Ticks"), config.ticks, 1, 100)
+            general.addEntry(cfgent.startIntSlider(Text.of("Maximum Early/Late Ticks"), configJR.ticks, 1, 100)
                     .setDefaultValue(10)
                     .setTooltip(Text.of("The Maximum amount of ticks to wait for an Early/Late jump"))
-                    .setSaveConsumer(newValue -> config.ticks = newValue)
+                    .setSaveConsumer(newValue -> configJR.ticks = newValue)
                     .build());
 
 

@@ -11,13 +11,13 @@ import java.nio.file.Path;
 
 
 @me.shedaniel.autoconfig.annotation.Config(name = "jump-reset-indicator")
-class Config implements ConfigData {
+class ConfigJR implements ConfigData {
 
     //Andy is the goat https://github.com/AndyRusso/pvplegacyutils/blob/main/src/main/java/io/github/andyrusso/pvplegacyutils/PvPLegacyUtilsConfig.java
 
     private static final Path file = FabricLoader.getInstance().getConfigDir().resolve("jump-reset-indicator.json");
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
-    private static Config instance;
+    private static ConfigJR instance;
 
     public boolean enabled = true;
     public boolean background = false;
@@ -25,13 +25,13 @@ class Config implements ConfigData {
     public int x = 300;
     public int y = 200;
 
-    public static Config getInstance() {
+    public static ConfigJR getInstance() {
         if (instance == null) {
             try {
-                instance = GSON.fromJson(Files.readString(file), Config.class);
+                instance = GSON.fromJson(Files.readString(file), ConfigJR.class);
             } catch (IOException exception) {
                 JumpResetIndicator.LOGGER.warn("JumpResetIndicator couldn't load the config, using defaults.");
-                instance = new Config();
+                instance = new ConfigJR();
             }
         }
 
