@@ -1,14 +1,14 @@
-package me.sootysplash;
+package me.sootysplash.JR;
 
 import com.terraformersmc.modmenu.api.ConfigScreenFactory;
 import com.terraformersmc.modmenu.api.ModMenuApi;
 import me.shedaniel.clothconfig2.api.*;
 import net.minecraft.text.Text;
 
-import static me.sootysplash.JumpResetIndicator.mc;
+import static me.sootysplash.JR.JumpResetIndicator.mc;
 
 
-public class ModMenu implements ModMenuApi {
+public class ModMenuJR implements ModMenuApi {
 
 
     @Override

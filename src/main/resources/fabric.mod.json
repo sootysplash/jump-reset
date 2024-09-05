@@ -16,10 +16,10 @@
 	"environment": "*",
 	"entrypoints": {
 		"main": [
-			"me.sootysplash.JumpResetIndicator"
+			"me.sootysplash.JR.JumpResetIndicator"
 		],
 		"modmenu": [
-			"me.sootysplash.ModMenu"
+			"me.sootysplash.JR.ModMenuJR"
 		]
 	},
 	"mixins": [
@@ -27,7 +27,7 @@
 	],
 	"depends": {
 		"fabricloader": ">=0.14.7",
-		"minecraft": ">=1.20",
+		"minecraft": ">=1.20.5",
 		"java": ">=17",
 		"fabric-api": "*"
 	}

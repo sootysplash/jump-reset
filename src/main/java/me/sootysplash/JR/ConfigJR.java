@@ -1,4 +1,4 @@
-package me.sootysplash;
+package me.sootysplash.JR;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;

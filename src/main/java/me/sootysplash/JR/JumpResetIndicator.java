@@ -1,4 +1,4 @@
-package me.sootysplash;
+package me.sootysplash.JR;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import me.shedaniel.autoconfig.AutoConfig;
@@ -22,11 +22,11 @@ public class JumpResetIndicator implements ModInitializer {
 
 	@Override
 	public void onInitialize() {
-		HudRenderCallback.EVENT.register(this::renderWidget);
+		HudRenderCallback.EVENT.register((e, t) -> renderWidget(e));
 		LOGGER.info("JumpResetIndicator | Sootysplash was here");
 		AutoConfig.register(ConfigJR.class, GsonConfigSerializer::new);
 	}
-	private void renderWidget(DrawContext context, float delta){
+	private void renderWidget(DrawContext context){
 		ConfigJR configJR = ConfigJR.getInstance();
 
 		if(!configJR.enabled)
@@ -64,6 +64,6 @@ public class JumpResetIndicator implements ModInitializer {
 
 		}
 
-		context.drawCenteredTextWithShadow(mc.inGameHud.getTextRenderer(), diff, (int) (x + (xOffset / 2f)), (int) (y - (yOffset / 1.5f)), ColorHelper.Argb.getArgb(0, 255, 255, 255));
+		context.drawCenteredTextWithShadow(mc.textRenderer, diff, (int) (x + (xOffset / 2f)), (int) (y - (yOffset / 1.5f)), ColorHelper.Argb.getArgb(0, 255, 255, 255));
 	}
 }
