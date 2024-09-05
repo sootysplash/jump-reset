@@ -47,20 +47,19 @@ public class JumpResetIndicator implements ModInitializer {
 		if(configJR.background) {
 
 			Tessellator tess = Tessellator.getInstance();
-			BufferBuilder bf = tess.getBuffer();
+			BufferBuilder bf = tess.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_COLOR);
 
 			Matrix4f posMat = context.getMatrices().peek().getPositionMatrix();
-			bf.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_COLOR);
 
-			bf.vertex(posMat, x, y, 0).color(0, 0, 0, alpha).next();
-			bf.vertex(posMat, x + xOffset, y, 0).color(0, 0, 0, alpha).next();
-			bf.vertex(posMat, x + xOffset, y - yOffset, 0).color(0, 0, 0, alpha).next();
-			bf.vertex(posMat, x, y - yOffset, 0).color(0, 0, 0, alpha).next();
+			bf.vertex(posMat, x, y, 0).color(0, 0, 0, alpha);
+			bf.vertex(posMat, x + xOffset, y, 0).color(0, 0, 0, alpha);
+			bf.vertex(posMat, x + xOffset, y - yOffset, 0).color(0, 0, 0, alpha);
+			bf.vertex(posMat, x, y - yOffset, 0).color(0, 0, 0, alpha);
 
 			RenderSystem.setShader(GameRenderer::getPositionColorProgram);
 			RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
 
-			tess.draw();
+			BufferRenderer.drawWithGlobalProgram(bf.end());
 
 		}
 
