@@ -19,6 +19,7 @@ public class ModMenuJR implements ModMenuApi {
             ConfigBuilder builder = ConfigBuilder.create()
                     .setParentScreen(parent)
                     .setTitle(Text.of("Config"))
+                    .setDoesConfirmSave(false)
                     .setSavingRunnable(configJR::save);
 
             ConfigCategory general = builder.getOrCreateCategory(Text.of("General"));
