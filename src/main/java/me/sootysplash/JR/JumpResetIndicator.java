@@ -33,10 +33,6 @@ public class JumpResetIndicator implements ModInitializer {
         LOGGER.info("JumpResetIndicator | Sootysplash was here");
 
         ConfigHolder<ConfigJR> holder = AutoConfig.register(ConfigJR.class, GsonConfigSerializer::new);
-        holder.registerLoadListener((configHolder, cfg) -> {
-            config = cfg;
-            return ActionResult.SUCCESS;
-        });
         config = holder.get();
 
         HudRenderCallback.EVENT.register((e, t) -> renderWidget(e));
