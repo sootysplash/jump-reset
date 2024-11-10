@@ -1,5 +1,6 @@
 package me.sootysplash.JR.integration;
 
+import me.shedaniel.autoconfig.AutoConfig;
 import me.shedaniel.clothconfig2.api.ConfigBuilder;
 import me.shedaniel.clothconfig2.api.ConfigCategory;
 import me.shedaniel.clothconfig2.api.ConfigEntryBuilder;
@@ -30,16 +31,19 @@ public class ClothConfigIntegration {
         ConfigCategory general = builder.getOrCreateCategory(Text.of("General"));
 
         general.addEntry(entryBuilder.startBooleanToggle(Text.of("Enabled"), config.enabled)
+                .setDefaultValue(true)
                 .setTooltip(Text.of("Render the Indicator?"))
                 .setSaveConsumer(newValue -> config.enabled = newValue)
                 .build());
 
         general.addEntry(entryBuilder.startIntField(Text.of("Ticks"), config.ticks)
+                .setDefaultValue(10)
                 .setTooltip(Text.of("The maximum amount of ticks to wait for an early/late jump"))
                 .setSaveConsumer(newValue -> config.ticks = newValue)
                 .build());
 
         BooleanListEntry background = entryBuilder.startBooleanToggle(Text.of("Background"), config.background)
+                .setDefaultValue(true)
                 .setTooltip(Text.of("Render the Background?"))
                 .setSaveConsumer(newValue -> config.background = newValue)
                 .build();
@@ -47,12 +51,15 @@ public class ClothConfigIntegration {
 
         Window window = MinecraftClient.getInstance().getWindow();
         general.addEntry(entryBuilder.startIntSlider(Text.of("X Position"), config.x, 0, window.getWidth())
+                .setDefaultValue(0)
                 .setTooltip(Text.of("The X position of the HUD element"))
                 .setSaveConsumer(newValue -> config.x = newValue).build());
         general.addEntry(entryBuilder.startIntSlider(Text.of("Y Position"), config.y, 0, window.getHeight())
+                .setDefaultValue(0)
                 .setTooltip(Text.of("The Y position of the HUD element"))
                 .setSaveConsumer(newValue -> config.y = newValue).build());
         general.addEntry(entryBuilder.startIntSlider(Text.of("Alpha"), config.alpha, 0, 255)
+                .setDefaultValue(50)
                 .setTooltip(Text.of("The alpha of the HUD element background"))
                 .setDisplayRequirement(Requirement.isTrue(background))
                 .setSaveConsumer(newValue -> config.alpha = newValue).build());
