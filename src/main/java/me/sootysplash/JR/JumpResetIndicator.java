@@ -45,41 +45,49 @@ public class JumpResetIndicator implements ModInitializer {
     private void renderWidget(DrawContext context) {
         ConfigJR configJR = getConfig();
 
-		if(!configJR.enabled)
-			return;
+        if (!configJR.enabled) {
+            return;
+        }
 
-		String diff = "No Jump";
-		if(lastModTime + 2500 <= System.currentTimeMillis() || Math.abs(jumpAge - hurtAge) >= configJR.ticks) diff = "No Jump";
-		else if (jumpAge == hurtAge + 1) diff = "Perfect!";
-		else if(hurtAge + 1 < jumpAge) diff = "Late: ".concat(String.valueOf(jumpAge - hurtAge + 1)).concat(" Tick");
-		else if(hurtAge + 1 > jumpAge) diff = "Early: ".concat(String.valueOf(hurtAge + 1 - jumpAge)).concat(" Tick");
+        String displayText;
+        if (((lastModTime + 2500) <= System.currentTimeMillis()) || (Math.abs(jumpAge - hurtAge) >= configJR.ticks)) {
+            displayText = "No Jump";
+        } else if (jumpAge == hurtAge + 1) {
+            displayText = "Perfect!";
+        } else if (hurtAge + 1 < jumpAge) {
+            displayText = "Late: ".concat(String.valueOf(jumpAge - hurtAge + 1)).concat(" Tick");
+        } else if (hurtAge + 1 > jumpAge) {
+            displayText = "Early: ".concat(String.valueOf(hurtAge + 1 - jumpAge)).concat(" Tick");
+        } else {
+            displayText = "No Jump";
+        }
 
-		int alpha = 50;
-		int x = configJR.x;
-		int y = configJR.y;
-		int xOffset = 80;
-		int yOffset = 20;
+        int x = configJR.x;
+        int y = configJR.y;
+        int width = 80;
+        int height = 20;
 
-		if(configJR.background) {
+        int alpha = configJR.alpha;
 
-			Tessellator tess = Tessellator.getInstance();
-			BufferBuilder bf = tess.getBuffer();
+        if (configJR.background) {
+            Tessellator tessellator = Tessellator.getInstance();
+            BufferBuilder buffer = tessellator.getBuffer();
 
-			Matrix4f posMat = context.getMatrices().peek().getPositionMatrix();
-			bf.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_COLOR);
+            Matrix4f matrix4f = context.getMatrices().peek().getPositionMatrix();
+            buffer.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_COLOR);
 
-			bf.vertex(posMat, x, y, 0).color(0, 0, 0, alpha).next();
-			bf.vertex(posMat, x + xOffset, y, 0).color(0, 0, 0, alpha).next();
-			bf.vertex(posMat, x + xOffset, y - yOffset, 0).color(0, 0, 0, alpha).next();
-			bf.vertex(posMat, x, y - yOffset, 0).color(0, 0, 0, alpha).next();
+            buffer.vertex(matrix4f, x, y, 0).color(0, 0, 0, alpha).next();
+            buffer.vertex(matrix4f, x, y + height, 0).color(0, 0, 0, alpha).next();
+            buffer.vertex(matrix4f, x + width, y + height, 0).color(0, 0, 0, alpha).next();
+            buffer.vertex(matrix4f, x + width, y, 0).color(0, 0, 0, alpha).next();
 
-			RenderSystem.setShader(GameRenderer::getPositionColorProgram);
-			RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
+            RenderSystem.setShader(GameRenderer::getPositionColorProgram);
+            RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
 
-			tess.draw();
+            tessellator.draw();
+        }
 
-		}
-
-		context.drawCenteredTextWithShadow(mc.textRenderer, diff, (int) (x + (xOffset / 2f)), (int) (y - (yOffset / 1.5f)), ColorHelper.Argb.getArgb(0, 255, 255, 255));
-	}
+        int fontHeight = mc.textRenderer.fontHeight;
+        context.drawCenteredTextWithShadow(mc.textRenderer, displayText, (int) (x + (width / 2f)), (int) (y + ((height / 2f) - (fontHeight / 2.0f))), ColorHelper.Argb.getArgb(0, 255, 255, 255));
+    }
 }
