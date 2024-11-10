@@ -25,7 +25,8 @@ public class ClothConfigIntegration {
                 .create()
                 .setParentScreen(parent)
                 .setTitle(Text.of("General"))
-                .transparentBackground();
+                .transparentBackground()
+                .setSavingRunnable(() -> AutoConfig.getConfigHolder(ConfigJR.class).save());
 
         ConfigEntryBuilder entryBuilder = builder.entryBuilder();
         ConfigCategory general = builder.getOrCreateCategory(Text.of("General"));
