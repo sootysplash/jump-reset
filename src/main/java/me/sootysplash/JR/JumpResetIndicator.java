@@ -2,32 +2,48 @@ package me.sootysplash.JR;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import me.shedaniel.autoconfig.AutoConfig;
+import me.shedaniel.autoconfig.ConfigHolder;
 import me.shedaniel.autoconfig.serializer.GsonConfigSerializer;
 import net.fabricmc.api.ModInitializer;
-
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.render.*;
+import net.minecraft.util.ActionResult;
 import net.minecraft.util.math.ColorHelper;
 import org.joml.Matrix4f;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class JumpResetIndicator implements ModInitializer {
-	public static final MinecraftClient mc = MinecraftClient.getInstance();
-    public static final Logger LOGGER = LoggerFactory.getLogger("jump-reset-indicator");
-	public static int hurtAge, jumpAge;
-	public static long lastModTime;
 
-	@Override
-	public void onInitialize() {
-		HudRenderCallback.EVENT.register((e, t) -> renderWidget(e));
-		LOGGER.info("JumpResetIndicator | Sootysplash was here");
-		AutoConfig.register(ConfigJR.class, GsonConfigSerializer::new);
-	}
-	private void renderWidget(DrawContext context){
-		ConfigJR configJR = ConfigJR.getInstance();
+    public static final MinecraftClient mc = MinecraftClient.getInstance();
+    public static final Logger LOGGER = LoggerFactory.getLogger("jump-reset-indicator");
+    public static int hurtAge, jumpAge;
+    public static long lastModTime;
+
+    private static ConfigJR config;
+
+    public static ConfigJR getConfig() {
+        return config;
+    }
+
+    @Override
+    public void onInitialize() {
+        LOGGER.info("JumpResetIndicator | Sootysplash was here");
+
+        ConfigHolder<ConfigJR> holder = AutoConfig.register(ConfigJR.class, GsonConfigSerializer::new);
+        holder.registerLoadListener((configHolder, cfg) -> {
+            config = cfg;
+            return ActionResult.SUCCESS;
+        });
+        config = holder.get();
+
+        HudRenderCallback.EVENT.register((e, t) -> renderWidget(e));
+    }
+
+    private void renderWidget(DrawContext context) {
+        ConfigJR configJR = getConfig();
 
 		if(!configJR.enabled)
 			return;

@@ -5,7 +5,8 @@
 	"name": "Jump Reset Indicator",
 	"description": "Informs the player on how close they were to performing a successful jump reset.",
 	"authors": [
-		"Sootysplash"
+		"Sootysplash",
+		"7orivorian"
 	],
 	"contact": {
 		"homepage": "https://github.com/sootysplash",
@@ -19,7 +20,7 @@
 			"me.sootysplash.JR.JumpResetIndicator"
 		],
 		"modmenu": [
-			"me.sootysplash.JR.ModMenuJR"
+			"me.sootysplash.JR.integration.ModMenuIntegration"
 		]
 	},
 	"mixins": [
