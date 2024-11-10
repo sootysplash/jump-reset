@@ -10,17 +10,19 @@ import static me.sootysplash.JR.JumpResetIndicator.*;
 
 @Mixin(LivingEntity.class)
 public class LivingEntityMixin {
-	@Inject(at = @At("HEAD"), method = "jump")
-	private void jump(CallbackInfo info) {
-		if((Object) this == mc.player) {
-			jumpAge = mc.player.age;
-			lastModTime = System.currentTimeMillis();
-		}
-	}
-	@Inject(at = @At("HEAD"), method = "onDamaged")
-	private void onDamage(CallbackInfo info) {
-		if((Object) this == mc.player) {
-			hurtAge = mc.player.age;
-		}
-	}
+
+    @Inject(at = @At("HEAD"), method = "jump")
+    private void jump(CallbackInfo info) {
+        if ((Object) this == mc.player) {
+            jumpAge = mc.player.age;
+            lastModTime = System.currentTimeMillis();
+        }
+    }
+
+    @Inject(at = @At("HEAD"), method = "onDamaged")
+    private void onDamage(CallbackInfo info) {
+        if ((Object) this == mc.player) {
+            hurtAge = mc.player.age;
+        }
+    }
 }
