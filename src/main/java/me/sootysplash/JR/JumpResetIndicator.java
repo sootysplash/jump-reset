@@ -88,6 +88,7 @@ public class JumpResetIndicator implements ModInitializer {
         }
 
         int fontHeight = mc.textRenderer.fontHeight;
-        context.drawCenteredTextWithShadow(mc.textRenderer, displayText, (int) (x + (width / 2f)), (int) (y + ((height / 2f) - (fontHeight / 2.0f))), ColorHelper.Argb.getArgb(0, 255, 255, 255));
+        int halfFontHeight = (int) Math.floor(fontHeight / 2.0f);
+        context.drawCenteredTextWithShadow(mc.textRenderer, displayText, (int) (x + (width / 2f)), (int) (y + ((height / 2f) - halfFontHeight)), ColorHelper.Argb.getArgb(0, 255, 255, 255));
     }
 }
