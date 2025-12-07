@@ -5,7 +5,8 @@
 	"name": "Jump Reset Indicator",
 	"description": "Informs the player on how close they were to performing a successful jump reset.",
 	"authors": [
-		"Sootysplash"
+		"Sootysplash",
+      "Alfakynz"
 	],
 	"contact": {
 		"homepage": "https://github.com/sootysplash",
@@ -28,7 +29,7 @@
 	"depends": {
 		"fabricloader": ">=0.14.7",
 		"minecraft": ">=1.21",
-		"java": ">=17",
+		"java": ">=21",
 		"fabric-api": "*"
 	}
 }

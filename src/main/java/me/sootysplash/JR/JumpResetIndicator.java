@@ -1,16 +1,15 @@
 package me.sootysplash.JR;
 
-import com.mojang.blaze3d.systems.RenderSystem;
 import me.shedaniel.autoconfig.AutoConfig;
 import me.shedaniel.autoconfig.serializer.GsonConfigSerializer;
 import net.fabricmc.api.ModInitializer;
 
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
+//import net.fabricmc.fabric.api.client.rendering.v1.hud.HudElementRegistry;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.render.*;
-import net.minecraft.util.math.ColorHelper;
-import org.joml.Matrix4f;
+//import net.minecraft.util.Identifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -22,6 +21,13 @@ public class JumpResetIndicator implements ModInitializer {
 
 	@Override
 	public void onInitialize() {
+        // Uncomment this code to replace the deprecated HudRenderCallback method with the new HudElementRegistry system (deprecated as of 1.21.8)
+        // Also don't forget to add the necessary imports at the top
+        /*
+        HudElementRegistry.addLast(
+                Identifier.of("jump-reset-indicator", "widget"), (context, tickDelta) -> renderWidget(context)
+        );
+        */
 		HudRenderCallback.EVENT.register((e, t) -> renderWidget(e));
 		LOGGER.info("JumpResetIndicator | Sootysplash was here");
 		AutoConfig.register(ConfigJR.class, GsonConfigSerializer::new);
@@ -44,25 +50,12 @@ public class JumpResetIndicator implements ModInitializer {
 		int xOffset = 80;
 		int yOffset = 20;
 
-		if(configJR.background) {
+        if (configJR.background) {
+            int bgColor = (alpha << 24) | (0);
+            context.fill(x, y - yOffset, x + xOffset, y, bgColor);
+        }
 
-			Tessellator tess = Tessellator.getInstance();
-			BufferBuilder bf = tess.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_COLOR);
-
-			Matrix4f posMat = context.getMatrices().peek().getPositionMatrix();
-
-			bf.vertex(posMat, x, y, 0).color(0, 0, 0, alpha);
-			bf.vertex(posMat, x + xOffset, y, 0).color(0, 0, 0, alpha);
-			bf.vertex(posMat, x + xOffset, y - yOffset, 0).color(0, 0, 0, alpha);
-			bf.vertex(posMat, x, y - yOffset, 0).color(0, 0, 0, alpha);
-
-			RenderSystem.setShader(GameRenderer::getPositionColorProgram);
-			RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
-
-			BufferRenderer.drawWithGlobalProgram(bf.end());
-
-		}
-
-		context.drawCenteredTextWithShadow(mc.textRenderer, diff, (int) (x + (xOffset / 2f)), (int) (y - (yOffset / 1.5f)), ColorHelper.Argb.getArgb(0, 255, 255, 255));
+        int textColor = 0xFFFFFFFF;
+        context.drawCenteredTextWithShadow(mc.textRenderer, diff, (int) (x + (xOffset / 2f)), (int) (y - (yOffset / 1.5f)), textColor);
 	}
 }
