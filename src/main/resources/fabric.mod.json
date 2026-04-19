@@ -13,7 +13,7 @@
 	},
 	"license": "Apache-2.0",
 	"icon": "assets/jump-reset-indicator/icon.png",
-	"environment": "*",
+	"environment": "client",
 	"entrypoints": {
 		"main": [
 			"me.sootysplash.JR.JumpResetIndicator"

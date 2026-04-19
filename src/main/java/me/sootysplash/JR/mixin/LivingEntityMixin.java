@@ -12,14 +12,14 @@ import static me.sootysplash.JR.JumpResetIndicator.*;
 public class LivingEntityMixin {
 	@Inject(at = @At("HEAD"), method = "jump")
 	private void jump(CallbackInfo info) {
-		if((Object) this == mc.player) {
+		if (this.equals(mc.player)) {
 			jumpAge = mc.player.age;
 			lastModTime = System.currentTimeMillis();
 		}
 	}
 	@Inject(at = @At("HEAD"), method = "onDamaged")
 	private void onDamage(CallbackInfo info) {
-		if((Object) this == mc.player) {
+		if (this.equals(mc.player)) {
 			hurtAge = mc.player.age;
 		}
 	}
