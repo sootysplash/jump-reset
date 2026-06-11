@@ -5,12 +5,11 @@ import com.google.gson.GsonBuilder;
 import me.shedaniel.autoconfig.ConfigData;
 import net.fabricmc.loader.api.FabricLoader;
 
+import java.awt.*;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-
-@me.shedaniel.autoconfig.annotation.Config(name = "jump-reset-indicator")
 class ConfigJR implements ConfigData {
 
     //Andy is the goat https://github.com/AndyRusso/pvplegacyutils/blob/main/src/main/java/io/github/andyrusso/pvplegacyutils/PvPLegacyUtilsConfig.java
@@ -24,6 +23,9 @@ class ConfigJR implements ConfigData {
     public int ticks = 10;
     public int x = 300;
     public int y = 200;
+    public double scale = 1f;
+    public int textColor = new Color(255, 255, 255).getRGB();
+    public int backgroundColor = new Color(0, 0, 0, 50).getRGB();
 
     public static ConfigJR getInstance() {
         if (instance == null) {
@@ -43,7 +45,7 @@ class ConfigJR implements ConfigData {
             Files.writeString(file, GSON.toJson(this));
         } catch (IOException e) {
             JumpResetIndicator.LOGGER.error("JumpResetIndicator could not save the config.");
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
     }
 
