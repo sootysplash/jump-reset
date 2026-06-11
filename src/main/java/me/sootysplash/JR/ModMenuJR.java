@@ -4,7 +4,7 @@ import com.terraformersmc.modmenu.api.ConfigScreenFactory;
 import com.terraformersmc.modmenu.api.ModMenuApi;
 import me.shedaniel.clothconfig2.api.*;
 import me.shedaniel.clothconfig2.gui.entries.BooleanListEntry;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
@@ -130,8 +130,8 @@ public class ModMenuJR implements ModMenuApi {
                         int x = graphics.guiWidth() / 2;
                         int y = graphics.guiHeight() / 2;
                         int col = Color.GRAY.getRGB();
-                        graphics.vLine(x, 0, y * 2, col);
-                        graphics.hLine(0, x * 2, y, col);
+                        graphics.verticalLine(x, 0, y * 2, col);
+                        graphics.horizontalLine(0, x * 2, y, col);
                     });
 
                     DragWidget[] scaleWidget = new DragWidget[1];
@@ -139,7 +139,7 @@ public class ModMenuJR implements ModMenuApi {
                     DragWidget mainWidget = addRenderableWidget(new DragWidget(0, 0, 0, 0) {
 
                         @Override
-                        protected void renderWidget(GuiGraphics graphics, int mouseX, int mouseY, float a) {
+                        protected void extractWidgetRenderState(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float a) {
                             if (isDraggingMovement) {
                                 currentOffset[0] = (int) (startingPos[0] + mouseX - beganDragAt[0]);
                                 currentOffset[1] = (int) (startingPos[1] + mouseY - beganDragAt[1]);
@@ -200,7 +200,7 @@ public class ModMenuJR implements ModMenuApi {
                         private final double[] startingScale = new double[1];
 
                         @Override
-                        protected void renderWidget(GuiGraphics graphics, int mouseX, int mouseY, float a) {
+                        protected void extractWidgetRenderState(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float a) {
                             if (isDraggingMovement) {
                                 double rawNewScale = startingScale[0] + (mouseX - beganDragAt[0] + mouseY - beganDragAt[1]) / 100.0;
                                 currentScale[0] = Math.max(getScaleLimits()[0], Math.min(getScaleLimits()[1], rawNewScale));
@@ -271,7 +271,7 @@ public class ModMenuJR implements ModMenuApi {
         protected double[] beganDragAt = new double[2];
 
         @Override
-        protected abstract void renderWidget(GuiGraphics guiGraphics, int mX, int mY, float a);
+        protected abstract void extractWidgetRenderState(GuiGraphicsExtractor guiGraphics, int mX, int mY, float a);
 
         @Override
         public void onClick(MouseButtonEvent click, boolean doubleClick) {

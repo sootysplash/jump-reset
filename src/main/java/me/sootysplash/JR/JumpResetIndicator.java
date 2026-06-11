@@ -1,11 +1,12 @@
 package me.sootysplash.JR;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import net.fabricmc.api.ModInitializer;
 
-import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
+import net.fabricmc.fabric.api.client.rendering.v1.hud.HudElementRegistry;
+import net.fabricmc.fabric.api.client.rendering.v1.hud.VanillaHudElements;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.resources.Identifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,7 +18,9 @@ public class JumpResetIndicator implements ModInitializer {
 
 	@Override
 	public void onInitialize() {
-		HudRenderCallback.EVENT.register((t, e) -> wrappedRenderWidget(t));
+        HudElementRegistry.attachElementBefore(VanillaHudElements.CROSSHAIR,
+                Identifier.fromNamespaceAndPath("jump-reset-indicator", "before_crosshair"),
+                (t, e) -> wrappedRenderWidget(t));
 		LOGGER.info("JumpResetIndicator | Sootysplash was here");
 	}
 
@@ -25,7 +28,7 @@ public class JumpResetIndicator implements ModInitializer {
         return new int[]{80, 20};
     }
 
-    public static void applyTransformsForTask(GuiGraphics graphics, float scale, Runnable runnable) {
+    public static void applyTransformsForTask(GuiGraphicsExtractor graphics, float scale, Runnable runnable) {
         var stack = graphics.pose();
         stack.pushMatrix();
         stack.scale(scale, scale);
@@ -33,7 +36,7 @@ public class JumpResetIndicator implements ModInitializer {
         stack.popMatrix();
     }
 
-    private static void wrappedRenderWidget(GuiGraphics context) {
+    private static void wrappedRenderWidget(GuiGraphicsExtractor context) {
         ConfigJR configJR = ConfigJR.getInstance();
         if (!configJR.enabled) {
             return;
@@ -47,7 +50,7 @@ public class JumpResetIndicator implements ModInitializer {
         applyTransformsForTask(context, (float) configJR.scale, () -> renderWidget(context, (int) (configJR.x * inverseScale), (int) (configJR.y * inverseScale)));
     }
 
-    public static void renderWidget(GuiGraphics context, int x, int y) {
+    public static void renderWidget(GuiGraphicsExtractor context, int x, int y) {
         ConfigJR configJR = ConfigJR.getInstance();
 		String diff = "No Jump";
 		if(lastModTime + 2500 <= System.currentTimeMillis() || Math.abs(jumpAge - hurtAge) >= configJR.ticks) diff = "No Jump";
@@ -63,6 +66,6 @@ public class JumpResetIndicator implements ModInitializer {
         int textW = mc.font.width(diff);
         int drawX = (int) (x + wh[0] / 2f - textW / 2f);
         int drawY = (int) (y + (wh[1] / 3f));
-        context.drawString(mc.font, diff, drawX, drawY, configJR.textColor);
+        context.text(mc.font, diff, drawX, drawY, configJR.textColor);
 	}
 }
