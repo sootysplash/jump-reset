@@ -27,10 +27,10 @@ public class JumpResetIndicator implements ModInitializer {
 
     public static void applyTransformsForTask(GuiGraphics graphics, float scale, Runnable runnable) {
         var stack = graphics.pose();
-        stack.pushPose();
-        stack.scale(scale, scale, scale);
+        stack.pushMatrix();
+        stack.scale(scale, scale);
         runnable.run();
-        stack.popPose();
+        stack.popMatrix();
     }
 
     private static void wrappedRenderWidget(GuiGraphics context) {
