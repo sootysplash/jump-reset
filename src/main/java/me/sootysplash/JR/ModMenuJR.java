@@ -9,6 +9,8 @@ import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.input.KeyEvent;
+import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.network.chat.Component;
 import org.lwjgl.glfw.GLFW;
 
@@ -78,7 +80,7 @@ public class ModMenuJR implements ModMenuApi {
                 @Override
                 public Component getYesNoText(boolean bool) {
                     if (bool) {
-                        ((Button) this.children().get(0)).onPress(); // click buttonWidget for true -> false
+                        ((Button) this.children().get(0)).onPress(null); // click buttonWidget for true -> false
                         if (mc.level != null) {
                             openHudEditor();
                         }
@@ -157,7 +159,11 @@ public class ModMenuJR implements ModMenuApi {
                             this.setHeight(bgH = (int) (wh[1] * scale));
 
                             graphics.fill(bgX, bgY, bgX + bgW, bgY + bgH, new Color(255, 255, 255, 90).getRGB());
-                            graphics.renderOutline(bgX, bgY, bgW, bgH, white);
+                            // outline
+                            graphics.fill(bgX, bgY, bgX + bgW, bgY + 1, white);
+                            graphics.fill(bgX, bgY + bgH - 1, bgX + bgW, bgY + bgH, white);
+                            graphics.fill(bgX, bgY + 1, bgX + 1, bgY + bgH - 1, white);
+                            graphics.fill(bgX + bgW - 1, bgY + 1, bgX + bgW, bgY + bgH - 1, white);
 
                             applyTransformsForTask(graphics, (float) currentScale[0], () -> JumpResetIndicator.renderWidget(graphics,
                                     (int) (currentOffset[0] * inverseScale),
@@ -165,22 +171,24 @@ public class ModMenuJR implements ModMenuApi {
                         }
 
                         @Override
-                        public void onClick(double mx, double my) {
+                        public void onClick(MouseButtonEvent click, boolean doubleClick) {
+                            double mx = click.x();
+                            double my = click.y();
                             DragWidget sw = scaleWidget[0];
                             if (sw.getX() < mx && sw.getY() < my &&
                                     sw.getX() + sw.getWidth() > mx && sw.getY() + sw.getHeight() > my) {
-                                sw.onClick(mx, my);
+                                sw.onClick(click, doubleClick);
                                 return;
                             }
-                            super.onClick(mx, my);
+                            super.onClick(click, doubleClick);
                             startingPos[0] = currentOffset[0];
                             startingPos[1] = currentOffset[1];
                         }
 
                         @Override
-                        public void onRelease(double x, double y) {
-                            scaleWidget[0].onRelease(x, y);
-                            super.onRelease(x, y);
+                        public void onRelease(MouseButtonEvent click) {
+                            scaleWidget[0].onRelease(click);
+                            super.onRelease(click);
                         }
 
                         private final double[] startingPos = new double[2];
@@ -215,8 +223,8 @@ public class ModMenuJR implements ModMenuApi {
                         }
 
                         @Override
-                        public void onClick(double x, double y) {
-                            super.onClick(x, y);
+                        public void onClick(MouseButtonEvent click, boolean doubleClick) {
+                            super.onClick(click, doubleClick);
                             startingScale[0] = currentScale[0];
                         }
 
@@ -224,7 +232,8 @@ public class ModMenuJR implements ModMenuApi {
                 }
 
                 @Override
-                public boolean keyPressed(int key, int scancode, int mods) {
+                public boolean keyPressed(KeyEvent keyEvent) {
+                    int key = keyEvent.key();
                     if (key == GLFW.GLFW_KEY_ESCAPE) {
                         this.onClose();
                         return true;
@@ -236,7 +245,7 @@ public class ModMenuJR implements ModMenuApi {
                         config.scale = currentScale[0];
                         return true;
                     }
-                    return super.keyPressed(key, scancode, mods);
+                    return super.keyPressed(keyEvent);
                 }
 
                 @Override
@@ -265,14 +274,14 @@ public class ModMenuJR implements ModMenuApi {
         protected abstract void renderWidget(GuiGraphics guiGraphics, int mX, int mY, float a);
 
         @Override
-        public void onClick(double x, double y) {
+        public void onClick(MouseButtonEvent click, boolean doubleClick) {
             isDraggingMovement = true;
-            beganDragAt[0] = x;
-            beganDragAt[1] = y;
+            beganDragAt[0] = click.x();
+            beganDragAt[1] = click.y();
         }
 
         @Override
-        public void onRelease(double x, double y) {
+        public void onRelease(MouseButtonEvent click) {
             isDraggingMovement = false;
         }
 
